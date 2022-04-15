@@ -1,5 +1,3 @@
-import React from "react";
-
 const Card = ({ movie }) => {
   const dateFormater = (date) => {
     let [yy, mm, dd] = date.split("-");
@@ -75,6 +73,18 @@ const Card = ({ movie }) => {
     return genreArray.map((genre) => <li key={genre}>{genre}</li>);
   };
 
+  const addStorage = () => {
+    let storedData = window.localStorage.movies
+      ? window.localStorage.movies.split(",")
+      : [];
+    if (!storedData.includes(movie.id.toString())) {
+      storedData.push(movie.id);
+      window.localStorage.movies = storedData;
+    } else {
+      alert("Vous avez déjà rajouté ce film à vos likes");
+    }
+  };
+
   return (
     <div className="card">
       <img
@@ -97,7 +107,9 @@ const Card = ({ movie }) => {
       <ul>{movie.genre_ids ? genreFinder(movie.genre_ids) : "pouet"}</ul>
       {movie.overview ? <h3>Synopsis : </h3> : ""}
       <p>{movie.overview}</p>
-      <div className="btn">Ajouter aux coups de coeur</div>
+      <div className="btn" onClick={() => addStorage()}>
+        Ajouter aux coups de coeur
+      </div>
     </div>
   );
 };
